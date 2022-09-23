@@ -1,0 +1,72 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  overflow-x: hidden;
+}
+
+:root {
+  --tiles: #5d5d5d;
+  --tile-light: #818181;
+  --tile-shadow: #3e3e3e;
+  --checked-tile: #363636;
+  --background: #303130;
+  --heading: #ffffff; 
+  --body: #e3e3e3;
+
+  --rotation: 0deg;
+}
+
+@media (min-width: 2000px) {
+  html {
+    font-size: calc((30/16)*100%);
+  }
+}
+
+@media (max-width: 1280px) {
+  html {
+    font-size: calc((14/16)*100%);
+  }
+  :root {
+    --rotation: 90deg;
+    --margin-rotation: .85rem;
+  }
+}
+
+@media (max-width: 720px) {
+  html {
+    font-size: calc((12/16)*100%);
+  }
+}
+
+@media (max-width: 400px) {
+  html {
+    font-size: calc((10/16)*100%);
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--body);
+}
+
+body, input, textarea, select, button {
+  font: 400 1rem "Inter", sans-serif;
+}
+
+button, a {
+  cursor: pointer;
+}
+
+h1, h2, h3 {  
+  color: var(--heading);
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+

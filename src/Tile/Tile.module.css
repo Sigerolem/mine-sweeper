@@ -1,0 +1,31 @@
+.tile {
+  background-color: var(--tiles);
+  border-radius: 1px;
+
+  height: 1.7rem;
+  width: 1.7rem;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  font-weight: 700;
+
+  transform: rotate(var(--rotation));
+  border-top: 2px solid var(--tile-light);
+  border-left: 2px solid var(--tile-light);
+  border-right: 2px solid var(--tile-shadow);
+  border-bottom: 2px solid var(--tile-shadow);
+
+  transition: filter .1s;
+}
+
+.hover {
+  background-color: var(--checked-tile);
+  border: 1px solid var(--tile-shadow);
+}
+
+.checked {
+  background-color: var(--background);
+  border: 1px solid var(--tile-shadow);
+}
