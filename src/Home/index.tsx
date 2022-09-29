@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
+import { RoundButtonModal } from '../RoundButtonModal'
 import { Tile } from '../Tile'
 import { countBombsAround, fillArray, listTilesAround, placeBombs, Size, TileType } from '../utils'
-import styles from './Home.module.css'
+import styles from './Home.module.scss'
 
 const dificultySets = {
   easy: {
@@ -16,21 +17,21 @@ const dificultySets = {
       x: 18,
       y: 14
     },
-    bombsAmount: 30
+    bombsAmount: 35
   },
   hard: {
     size: {
       x: 24,
       y: 20
     },
-    bombsAmount: 60
+    bombsAmount: 70
   },
   expert: {
     size: {
-      x: 36,
+      x: 34,
       y: 20
     },
-    bombsAmount: 80
+    bombsAmount: 110
   }
 }
 
@@ -44,6 +45,7 @@ export function Home() {
   const checkedTiles = useRef([] as number[])
   const [tiles, setTiles] = useState(fillArray(size.current))
   const [bombsLeft, setBombsLeft] = useState(10)
+  const [timer, setTimer] = useState(0)
 
   useEffect(() => {
     if (checkedTiles.current.length === ((size.current.x * size.current.y) - bombsAmount.current)) {
@@ -56,6 +58,12 @@ export function Home() {
     }
     setBombsLeft(bombsAmount.current - tiles.reduce((acc, item) => (item.value === '!' ? ++acc : acc), 0))
   }, [tiles])
+
+  useEffect(() => {
+    setInterval(() => {
+      setTimer(prev => prev + 1)
+    }, 1000)
+  }, [])
 
   function changeDificulty(newDificulty: Dificulty) {
     if (dificulty.current === newDificulty) return
@@ -73,6 +81,7 @@ export function Home() {
     bombs.current = []
     checkedTiles.current = []
     setTiles(fillArray(size.current))
+    setTimer(0)
   }
 
   function revealBombs() {
@@ -136,13 +145,44 @@ export function Home() {
   }
   return (
     <main onContextMenu={(e) => e.preventDefault()} className={styles.main}>
-      <div className={styles.buttons} >
-        <button onClick={() => { changeDificulty('easy') }} >Easy</button>
-        <button onClick={() => { changeDificulty('intermediate') }} >Medium</button>
-        <button onClick={() => { changeDificulty('hard') }} >Hard</button>
-        <button onClick={() => { changeDificulty('expert') }} >Expert</button>
-        <span>Bombs left: <strong>{`${bombsLeft}`}</strong></span>
-      </div>
+      <header className={styles.header} >
+
+        <div className={styles.headerLine} >
+          <div className={styles.bombsLeft} >
+            <img src="/mine.svg" alt="Mine Image" />
+            <strong>{`${bombsLeft}`}</strong>
+          </div>
+          <div className={styles.timePassed} >
+            <strong>{`${timer}`}</strong>
+            <img src="/wood.svg" alt="Mine Image" />
+          </div>
+        </div>
+
+        <div className={styles.headerLine} >
+          <RoundButtonModal icon={'menu'} >
+            <h3>Difficulty</h3>
+            <div className={styles.selectGrid} >
+              <button onClick={() => { changeDificulty('easy') }} >Easy</button>
+              <button onClick={() => { changeDificulty('intermediate') }} >Medium</button>
+              <button onClick={() => { changeDificulty('hard') }} >Hard</button>
+              <button onClick={() => { changeDificulty('expert') }} >Expert</button>
+            </div>
+          </RoundButtonModal>
+          <RoundButtonModal icon={'help'} >
+            <h3>How to play</h3>
+            <p>When you click on a cell, it will reveal its content.</p>
+            <p>If it contains a mine, the game will be over.</p>
+            <p>If it doesn&apos;t, then the cell will show how many mines are around it. Like shown below.</p>
+            <img src="/help.png" alt="Help" />
+            <p>The player can mark a cell by <strong>right clicking</strong> or <strong>long pressing</strong> the cell.</p>
+            <p>The mark can be a flag, usually indicating the player is sure about a mine location.</p>
+            <p>Or a <strong>question mark</strong> meaning doubt over the specific location of the mine.</p>
+            <p>Like shown bellow.</p>
+            <img src="/helpMark.png" alt="Help" />
+          </RoundButtonModal>
+        </div>
+
+      </header>
       <div
       className={styles.grid}
       style={{

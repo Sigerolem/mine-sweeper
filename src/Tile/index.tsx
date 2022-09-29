@@ -1,5 +1,5 @@
 import { longPressHandler, TileType } from '../utils'
-import styles from './Tile.module.css'
+import styles from './Tile.module.scss'
 
 interface TileProps {
   tile: TileType;
@@ -19,6 +19,8 @@ export function Tile({ tile, leftClick, rightClick }: TileProps) {
       onAuxClick={() => { rightClick(tile) }}
       onMouseUp={e => {
         if (e.button === 0) {
+          const div = e.target as HTMLDivElement
+          div.classList.remove(`${styles.hover}`)
           leftClick(tile)
         } else if (e.button === 2) {
           const div = e.target as HTMLDivElement
@@ -44,7 +46,12 @@ export function Tile({ tile, leftClick, rightClick }: TileProps) {
         if (!div.classList.contains(`${styles.checked}`)) div.classList.add(`${styles.hover}`)
       }}
     >
-      {tile.value}
+      {tile.value === 'b'
+        ? <img src="/mine.svg" />
+        : tile.value === '!'
+          ? <img src="/flag.svg" />
+          : tile.value
+        }
     </div>
   )
 }
