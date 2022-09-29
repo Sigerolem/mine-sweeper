@@ -35,8 +35,10 @@
   top: -10px;
   min-width: 200px;
   width: 40vw;
+  max-width: 600px;
   min-height: 500px;
   height: 60vh;
+  max-height: 1200px;
   background-color: #000000D0;
 
   display: flex;
@@ -49,27 +51,43 @@
   z-index: 100;
 
   h3 {
-    font-size: 2rem;
+    font-size: 1.5rem;
     margin-bottom: 2rem;
   }
 
   img {
     margin: 1rem 0;
-    min-height: 50px;
-    height: 10%;
-    max-height: 100px;
-    min-width: 50px;
-    width: 20%;
-    max-width: 100px;
+    height: 4rem;
+    width: 4rem;
   }
 
   p {
     color: var(--body);
     width: 80%;
     margin-bottom: 1rem;
+    font-size: .8rem;
 
     strong {
       font-style: italic;
+    }
+  }
+
+  div {
+    pointer-events: all;
+    height: 30%;
+    width: 70%;
+    max-height: 600px;
+    display: grid;
+    gap: 10% 15%;
+    grid-template-columns: 1fr 1fr;
+
+    button {
+      background-color: var(--tile-light);
+      color: var(--heading);
+      border-radius: .5rem;
+      border: none;
+
+      font-size: 1.2rem;
     }
   }
 

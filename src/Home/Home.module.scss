@@ -52,22 +52,3 @@
     font-size: 1.75rem;
   }
 }
-
-.selectGrid {
-  pointer-events: all;
-  height: 60%;
-  width: 80%;
-  max-height: 600px;
-  display: grid;
-  gap: 10% 15%;
-  grid-template-columns: 1fr 1fr;
-
-  button {
-    background-color: var(--tile-light);
-    color: var(--heading);
-    border-radius: .5rem;
-    border: none;
-
-    font-size: 1.2rem;
-  }
-}

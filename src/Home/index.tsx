@@ -161,7 +161,7 @@ export function Home() {
         <div className={styles.headerLine} >
           <RoundButtonModal icon={'menu'} >
             <h3>Difficulty</h3>
-            <div className={styles.selectGrid} >
+            <div>
               <button onClick={() => { changeDificulty('easy') }} >Easy</button>
               <button onClick={() => { changeDificulty('intermediate') }} >Medium</button>
               <button onClick={() => { changeDificulty('hard') }} >Hard</button>

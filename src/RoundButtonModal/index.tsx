@@ -12,7 +12,8 @@ export function RoundButtonModal({ children, icon }: RoundButtonModalProps) {
     <div
       className={styles.roundButton}
       onClick={() => { setShowModal(prev => !prev) }}
-      onMouseLeave={() => { setShowModal(false) }}
+      // onMouseLeave={() => { setShowModal(false) }}
+      title={icon === 'menu' ? 'Settings' : 'How to play'}
     >
       {
         icon === 'help'
