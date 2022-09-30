@@ -1,4 +1,4 @@
-import { longPressHandler, TileType } from '../utils'
+import { longPressHandler, TileType } from '../../utils'
 import styles from './Tile.module.scss'
 
 interface TileProps {

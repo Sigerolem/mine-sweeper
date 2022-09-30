@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
-import { RoundButtonModal } from '../RoundButtonModal'
-import { Tile } from '../Tile'
+import { DifficultySettings } from '../components/DifficultySettings'
+import { HowToPlay } from '../components/HowToPlay'
+import { Tile } from '../components/Tile'
 import { countBombsAround, fillArray, listTilesAround, placeBombs, Size, TileType } from '../utils'
 import styles from './Home.module.scss'
 
-const dificultySets = {
+const difficultySets = {
   easy: {
     size: {
       x: 10,
@@ -35,10 +36,10 @@ const dificultySets = {
   }
 }
 
-type Dificulty = 'easy' | 'intermediate' | 'hard' | 'expert'
+export type Difficulty = 'easy' | 'intermediate' | 'hard' | 'expert'
 
 export function Home() {
-  const dificulty = useRef<Dificulty>('easy')
+  const difficulty = useRef<Difficulty>('easy')
   const size = useRef<Size>({ x: 10, y: 10 })
   const bombsAmount = useRef(12)
   const bombs = useRef([] as number[])
@@ -65,14 +66,14 @@ export function Home() {
     }, 1000)
   }, [])
 
-  function changeDificulty(newDificulty: Dificulty) {
-    if (dificulty.current === newDificulty) return
+  function changeDifficulty(newDifficulty: Difficulty) {
+    if (difficulty.current === newDifficulty) return
 
-    dificulty.current = newDificulty
+    difficulty.current = newDifficulty
 
-    size.current.x = dificultySets[dificulty.current].size.x
-    size.current.y = dificultySets[dificulty.current].size.y
-    bombsAmount.current = dificultySets[dificulty.current].bombsAmount
+    size.current.x = difficultySets[difficulty.current].size.x
+    size.current.y = difficultySets[difficulty.current].size.y
+    bombsAmount.current = difficultySets[difficulty.current].bombsAmount
 
     resetGame()
   }
@@ -159,27 +160,8 @@ export function Home() {
         </div>
 
         <div className={styles.headerLine} >
-          <RoundButtonModal icon={'menu'} >
-            <h3>Difficulty</h3>
-            <div>
-              <button onClick={() => { changeDificulty('easy') }} >Easy</button>
-              <button onClick={() => { changeDificulty('intermediate') }} >Medium</button>
-              <button onClick={() => { changeDificulty('hard') }} >Hard</button>
-              <button onClick={() => { changeDificulty('expert') }} >Expert</button>
-            </div>
-          </RoundButtonModal>
-          <RoundButtonModal icon={'help'} >
-            <h3>How to play</h3>
-            <p>When you click on a cell, it will reveal its content.</p>
-            <p>If it contains a mine, the game will be over.</p>
-            <p>If it doesn&apos;t, then the cell will show how many mines are around it. Like shown below.</p>
-            <img src="/help.png" alt="Help" />
-            <p>The player can mark a cell by <strong>right clicking</strong> or <strong>long pressing</strong> the cell.</p>
-            <p>The mark can be a flag, usually indicating the player is sure about a mine location.</p>
-            <p>Or a <strong>question mark</strong> meaning doubt over the specific location of the mine.</p>
-            <p>Like shown bellow.</p>
-            <img src="/helpMark.png" alt="Help" />
-          </RoundButtonModal>
+          <DifficultySettings changeDifficulty={changeDifficulty} />
+          <HowToPlay />
         </div>
 
       </header>

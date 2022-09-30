@@ -4,13 +4,14 @@ import styles from './RoundButtonModal.module.scss'
 interface RoundButtonModalProps {
   children: ReactNode;
   icon: 'menu' | 'help';
+  modalClass: string;
 }
 
-export function RoundButtonModal({ children, icon }: RoundButtonModalProps) {
+export function RoundButtonModal({ children, icon, modalClass }: RoundButtonModalProps) {
   const [showModal, setShowModal] = useState(false)
   return (
     <div
-      className={styles.roundButton}
+      className={styles.container}
       onClick={() => { setShowModal(prev => !prev) }}
       // onMouseLeave={() => { setShowModal(false) }}
       title={icon === 'menu' ? 'Settings' : 'How to play'}
@@ -22,7 +23,7 @@ export function RoundButtonModal({ children, icon }: RoundButtonModalProps) {
       }
       {
         showModal &&
-        <div className={styles.modal} style={ icon === 'help' ? { right: '-10px' } : { left: '-10px' }} >
+        <div className={modalClass} style={ icon === 'help' ? { right: '-10px' } : { left: '-10px' }} >
           {children}
         </div>
       }

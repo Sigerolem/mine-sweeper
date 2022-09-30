@@ -1,0 +1,30 @@
+.container {
+  background-color: transparent;
+  cursor: pointer;
+
+  border: 1px solid #EEE;
+  border-radius: 50%;
+
+  width: 3rem;
+  height: 3rem;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  color: #EEE;
+  font-weight: 700;
+  font-size: 1.5rem;
+
+  position: relative;
+  
+  img:first-child {
+    width: 70%;
+  }
+
+  &:hover {
+    color: var(--tile-light);
+    border-color: var(--tile-light);
+    z-index: 100;
+  }
+}

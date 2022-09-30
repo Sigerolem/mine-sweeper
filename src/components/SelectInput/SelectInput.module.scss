@@ -1,0 +1,19 @@
+.container {
+  color: var(--heading);
+
+  border-radius: .5rem;
+  border: 0;
+
+
+  label {
+    font-size: 1.1rem;
+    display: block;
+  }
+
+  select {
+    background-color: var(--tile-light);
+    font-size: 1.3rem;
+    border-radius: .25rem;
+    color: inherit;
+  }
+}
