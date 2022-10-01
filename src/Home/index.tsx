@@ -48,6 +48,7 @@ export function Home() {
   const [bombsLeft, setBombsLeft] = useState(10)
   const [timer, setTimer] = useState(0)
   const timerTicking = useRef<number>()
+  const pauseTimer = useRef(false)
 
   useEffect(() => {
     if (checkedTiles.current.length === ((size.current.x * size.current.y) - bombsAmount.current)) {
@@ -64,6 +65,7 @@ export function Home() {
   useEffect(() => {
     if (timer !== 0) return
     timerTicking.current = setInterval(() => {
+      if (pauseTimer.current) return
       setTimer(prev => prev + 1)
     }, 1000)
   }, [timer])
