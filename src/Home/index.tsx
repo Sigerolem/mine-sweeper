@@ -69,13 +69,26 @@ export function Home() {
   }, [timer])
 
   function changeDifficulty(newDifficulty: Difficulty) {
-    if (difficulty.current === newDifficulty) return
+    if (difficulty.current === newDifficulty && bombsAmount.current === difficultySets[newDifficulty].bombsAmount) return
 
     difficulty.current = newDifficulty
 
     size.current.x = difficultySets[difficulty.current].size.x
     size.current.y = difficultySets[difficulty.current].size.y
     bombsAmount.current = difficultySets[difficulty.current].bombsAmount
+
+    resetGame()
+  }
+
+  function setCustomDifficulty(difficultySize: Difficulty, customBombsAmount: number) {
+    if (difficulty.current === difficultySize && bombsAmount.current === customBombsAmount) return
+
+    difficulty.current = difficultySize
+
+    size.current.x = difficultySets[difficulty.current].size.x
+    size.current.y = difficultySets[difficulty.current].size.y
+
+    bombsAmount.current = customBombsAmount
 
     resetGame()
   }
@@ -163,7 +176,7 @@ export function Home() {
         </div>
 
         <div className={styles.headerLine} >
-          <DifficultySettings changeDifficulty={changeDifficulty} />
+          <DifficultySettings changeDifficulty={changeDifficulty} setCustomDifficulty={setCustomDifficulty} />
           <HowToPlay />
         </div>
 
