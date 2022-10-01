@@ -177,6 +177,7 @@ export function Home() {
 
         <div className={styles.headerLine} >
           <DifficultySettings changeDifficulty={changeDifficulty} setCustomDifficulty={setCustomDifficulty} />
+          <button className={styles.restartButton} onClick={resetGame} >Restart</button>
           <HowToPlay />
         </div>
 
