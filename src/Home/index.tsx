@@ -47,6 +47,7 @@ export function Home() {
   const [tiles, setTiles] = useState(fillArray(size.current))
   const [bombsLeft, setBombsLeft] = useState(10)
   const [timer, setTimer] = useState(0)
+  const timerTicking = useRef<number>()
 
   useEffect(() => {
     if (checkedTiles.current.length === ((size.current.x * size.current.y) - bombsAmount.current)) {
@@ -61,10 +62,11 @@ export function Home() {
   }, [tiles])
 
   useEffect(() => {
-    setInterval(() => {
+    if (timer !== 0) return
+    timerTicking.current = setInterval(() => {
       setTimer(prev => prev + 1)
     }, 1000)
-  }, [])
+  }, [timer])
 
   function changeDifficulty(newDifficulty: Difficulty) {
     if (difficulty.current === newDifficulty) return
@@ -82,6 +84,7 @@ export function Home() {
     bombs.current = []
     checkedTiles.current = []
     setTiles(fillArray(size.current))
+    clearInterval(timerTicking.current)
     setTimer(0)
   }
 
