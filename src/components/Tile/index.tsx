@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import { longPressHandler, TileType } from '../../utils'
 import styles from './Tile.module.scss'
 
@@ -9,7 +10,7 @@ interface TileProps {
 
 const numberColors = ['', '#47b2ff', '#37ff4b', '#ff4747', '#ff38c7', '#800000', '#008080', '#b40078']
 
-export function Tile({ tile, leftClick, rightClick }: TileProps) {
+function TileComponent({ tile, leftClick, rightClick }: TileProps) {
   const longPress = longPressHandler(rightClick, tile)
   return (
     <div
@@ -55,3 +56,7 @@ export function Tile({ tile, leftClick, rightClick }: TileProps) {
     </div>
   )
 }
+
+export const Tile = memo(TileComponent, (prevProps, nextProps) => {
+  return Object.is(prevProps.tile, nextProps.tile)
+})
