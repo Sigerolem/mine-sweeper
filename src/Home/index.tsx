@@ -168,12 +168,12 @@ export function Home() {
 
         <div className={styles.headerLine} >
           <div className={styles.bombsLeft} >
-            <img src="/mine.svg" alt="Mine Image" />
+            <img src="mine.svg" alt="Mine Image" />
             <strong>{`${bombsLeft}`}</strong>
           </div>
           <div className={styles.timePassed} >
             <strong>{`${timer}`}</strong>
-            <img src="/wood.svg" alt="Mine Image" />
+            <img src="wood.svg" alt="Mine Image" />
           </div>
         </div>
 
