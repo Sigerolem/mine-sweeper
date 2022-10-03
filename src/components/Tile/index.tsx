@@ -48,9 +48,9 @@ function TileComponent({ tile, leftClick, rightClick }: TileProps) {
       }}
     >
       {tile.value === 'b'
-        ? <img src="/mine.svg" />
+        ? <img src="mine.svg" />
         : tile.value === '!'
-          ? <img src="/flag.svg" />
+          ? <img src="flag.svg" />
           : tile.value
         }
     </div>
