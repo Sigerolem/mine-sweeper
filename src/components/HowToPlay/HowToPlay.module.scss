@@ -7,7 +7,7 @@
   min-height: 400px;
   height: 65vh;
   max-height: 1200px;
-  background-color: #000000D0;
+  background-color: #000000D8;
 
   display: flex;
   flex-direction: column;
@@ -20,7 +20,7 @@
 
   h3 {
     font-size: 1.5rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
   }
 
   img {
@@ -32,7 +32,7 @@
   p {
     color: var(--body);
     width: 80%;
-    margin-bottom: 1rem;
+    margin-bottom: .5rem;
     font-size: .8rem;
 
     strong {
