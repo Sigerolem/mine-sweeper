@@ -25,6 +25,7 @@ export function RoundButtonModal({ children, icon, modalClass }: RoundButtonModa
         showModal &&
         <div className={modalClass} style={ icon === 'help' ? { right: '-10px' } : { left: '-10px' }} >
           {children}
+          <button className={styles.close} style={ icon === 'help' ? { right: '10px' } : { left: '10px' }} >X</button>
         </div>
       }
     </div>
