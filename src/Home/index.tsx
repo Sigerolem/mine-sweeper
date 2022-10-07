@@ -85,6 +85,11 @@ export function Home() {
   function setCustomDifficulty(difficultySize: Difficulty, customBombsAmount: number) {
     if (difficulty.current === difficultySize && bombsAmount.current === customBombsAmount) return
 
+    if (difficultySize === 'easy' && customBombsAmount > 89) {
+      alert('Too many bombs for the selected size.')
+      return
+    }
+
     difficulty.current = difficultySize
 
     size.current.x = difficultySets[difficulty.current].size.x
@@ -165,7 +170,6 @@ export function Home() {
   return (
     <main onContextMenu={(e) => e.preventDefault()} className={styles.main}>
       <header className={styles.header} >
-
         <div className={styles.headerLine} >
           <div className={styles.bombsLeft} >
             <img src="mine.svg" alt="Mine Image" />
@@ -179,7 +183,13 @@ export function Home() {
 
         <div className={styles.headerLine} >
           <DifficultySettings changeDifficulty={changeDifficulty} setCustomDifficulty={setCustomDifficulty} />
-          <button className={styles.restartButton} onClick={resetGame} >Restart</button>
+          <button
+            disabled={timer === 0}
+            className={styles.restartButton}
+            onClick={resetGame}
+          >
+            Restart
+          </button>
           <HowToPlay />
         </div>
 
