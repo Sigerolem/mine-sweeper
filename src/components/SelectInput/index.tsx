@@ -15,7 +15,6 @@ export function SelectInput({ children, varRef, defaultValue, label }: SelectInp
       <label>{label}</label>
       <select
         className={styles.selectInput}
-        name="aham"
         defaultValue={defaultValue}
         onChange={e => {
           varRef.current = e.target.value

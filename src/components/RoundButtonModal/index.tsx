@@ -1,4 +1,4 @@
-import { ReactNode, useState } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 import styles from './RoundButtonModal.module.scss'
 
 interface RoundButtonModalProps {
@@ -9,6 +9,13 @@ interface RoundButtonModalProps {
 
 export function RoundButtonModal({ children, icon, modalClass }: RoundButtonModalProps) {
   const [showModal, setShowModal] = useState(false)
+  useEffect(() => {
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        setShowModal(false)
+      }
+    })
+  }, [])
   return (
     <div
       className={styles.container}
@@ -25,7 +32,13 @@ export function RoundButtonModal({ children, icon, modalClass }: RoundButtonModa
         showModal &&
         <div className={modalClass} style={ icon === 'help' ? { right: '-10px' } : { left: '-10px' }} >
           {children}
-          <button className={styles.close} style={ icon === 'help' ? { right: '10px' } : { left: '10px' }} >X</button>
+          <button
+          onClick={(e) => { e.stopPropagation(); setShowModal(false) }}
+          className={styles.close}
+          style={ icon === 'help' ? { right: '10px' } : { left: '10px' }}
+          >
+            X
+          </button>
         </div>
       }
     </div>

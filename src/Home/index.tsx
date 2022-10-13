@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { DifficultySettings } from '../components/DifficultySettings'
+import { EndGameModal } from '../components/EndGameModal'
 import { HowToPlay } from '../components/HowToPlay'
 import { Tile } from '../components/Tile'
 import { countBombsAround, fillArray, listTilesAround, placeBombs, Size, TileType } from '../utils'
@@ -49,15 +50,20 @@ export function Home() {
   const [timer, setTimer] = useState(0)
   const timerTicking = useRef<number>()
   const pauseTimer = useRef(false)
+  const [modal, setModal] = useState(false)
+  const endGameSituation = useRef<'won' | 'lost'>('won')
 
   useEffect(() => {
     if (checkedTiles.current.length === ((size.current.x * size.current.y) - bombsAmount.current)) {
+      pauseTimer.current = true
       setTimeout(() => {
-        alert('ganhou')
-      }, 50)
-      setTimeout(() => {
-        resetGame()
-      }, 100)
+        const bestTime = parseInt(localStorage.getItem('bestMineSweeperTime') ?? '0')
+        if (timer < bestTime || bestTime === 0) {
+          localStorage.setItem('bestMineSweeperTime', String(timer))
+        }
+        endGameSituation.current = 'won'
+        setModal(true)
+      }, 400)
     }
     setBombsLeft(bombsAmount.current - tiles.reduce((acc, item) => (item.value === '!' ? ++acc : acc), 0))
   }, [tiles])
@@ -113,11 +119,10 @@ export function Home() {
       bombs.current.includes(tile.id) ? { ...tile, value: 'b', checked: true } : tile
     )))
     setTimeout(() => {
-      alert('você perdeu')
-    }, 50)
-    setTimeout(() => {
-      resetGame()
-    }, 100)
+      setModal(true)
+      endGameSituation.current = 'lost'
+      pauseTimer.current = true
+    }, 400)
   }
 
   function revealNumberOfBombsAround(tileId:number, amountOfBombsAround: number) {
@@ -167,6 +172,13 @@ export function Home() {
         : tile
     )))
   }
+
+  function closeEndGameModal() {
+    setModal(false)
+    pauseTimer.current = false
+    resetGame()
+  }
+
   return (
     <main onContextMenu={(e) => e.preventDefault()} className={styles.main}>
       <header className={styles.header} >
@@ -204,6 +216,12 @@ export function Home() {
           <Tile leftClick={handleLeftClick} rightClick={handleRightClick} tile={item} key={item.id} />
         )}
       </div>
+      <EndGameModal
+        showModal={modal}
+        situation={endGameSituation.current}
+        closeModal={closeEndGameModal}
+        time={timer}
+      />
     </main>
   )
 }
