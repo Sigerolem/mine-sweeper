@@ -4,6 +4,8 @@
 - Projeto foi inicializado com o Vite, o método atual mais eficiente de trabalhar com ReactJS.
 - Para estilização utilizei de Sass e Css Modules para facilitar o desenvolvimento e evitar erros e bugs no site.
 - Empenhei bastante tempo para deixar o site responsivo. Apesar de não muito agradável, o site funciona perfeitamente em smartphones e qualquer tamanho de tela.
+- Além de React, pude praticar meus conhecimentos em typescript, manipulação de DOM e uso do LocalStorage.
+- Apesar de não utilizado contexto neste aplicativo, foram utilizados os hooks: useState, useEffect, memo e UseCallback.
 
 Acesse https://sigerolem.github.io/mine-sweeper/ para jogar
 
@@ -13,4 +15,4 @@ Acesse https://sigerolem.github.io/mine-sweeper/ para jogar
 
 ![image](https://user-images.githubusercontent.com/72477661/195482872-827398df-b979-4b4f-bed9-439969cefcdd.png)
 
-- O site foi feito em inglês para por os meus conhecimentos em pratica.
+- O site foi feito em inglês para pôr os meus conhecimentos em prática.
