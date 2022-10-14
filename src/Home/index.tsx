@@ -3,6 +3,7 @@ import { DifficultySettings } from '../components/DifficultySettings'
 import { EndGameModal } from '../components/EndGameModal'
 import { HowToPlay } from '../components/HowToPlay'
 import { Tile } from '../components/Tile'
+import { useTimer } from '../hooks/useTimer'
 import { countBombsAround, fillArray, listTilesAround, placeBombs, Size, TileType } from '../utils'
 import styles from './Home.module.scss'
 
@@ -47,15 +48,13 @@ export function Home() {
   const checkedTiles = useRef([] as number[])
   const [tiles, setTiles] = useState(fillArray(size.current))
   const [bombsLeft, setBombsLeft] = useState(10)
-  const [timer, setTimer] = useState(0)
-  const timerTicking = useRef<number>()
-  const pauseTimer = useRef(false)
   const [modal, setModal] = useState(false)
   const endGameSituation = useRef<'won' | 'lost'>('won')
+  const { timer, pauseTimer, setTimer } = useTimer()
 
   useEffect(() => {
     if (checkedTiles.current.length === ((size.current.x * size.current.y) - bombsAmount.current)) {
-      pauseTimer.current = true
+      pauseTimer(true)
       setTimeout(() => {
         const bestTime = parseInt(localStorage.getItem('bestMineSweeperTime') ?? '0')
         if (timer < bestTime || bestTime === 0) {
@@ -67,14 +66,6 @@ export function Home() {
     }
     setBombsLeft(bombsAmount.current - tiles.reduce((acc, item) => (item.value === '!' ? ++acc : acc), 0))
   }, [tiles])
-
-  useEffect(() => {
-    if (timer !== 0) return
-    timerTicking.current = setInterval(() => {
-      if (pauseTimer.current) return
-      setTimer(prev => prev + 1)
-    }, 1000)
-  }, [timer])
 
   function changeDifficulty(newDifficulty: Difficulty) {
     if (difficulty.current === newDifficulty && bombsAmount.current === difficultySets[newDifficulty].bombsAmount) return
@@ -110,7 +101,6 @@ export function Home() {
     bombs.current = []
     checkedTiles.current = []
     setTiles(fillArray(size.current))
-    clearInterval(timerTicking.current)
     setTimer(0)
   }
 
@@ -121,7 +111,7 @@ export function Home() {
     setTimeout(() => {
       setModal(true)
       endGameSituation.current = 'lost'
-      pauseTimer.current = true
+      pauseTimer(true)
     }, 400)
   }
 
@@ -175,7 +165,7 @@ export function Home() {
 
   function closeEndGameModal() {
     setModal(false)
-    pauseTimer.current = false
+    pauseTimer(false)
     resetGame()
   }
 
