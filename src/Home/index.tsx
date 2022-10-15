@@ -9,7 +9,7 @@ import styles from './Home.module.scss'
 
 export function Home() {
   const { timer, pauseTimer, setTimer } = useTimer()
-  const { size, bombsAmount, changeDifficulty: hookChangeDifficulty, setCustomDifficulty: hookSet } = useGameSettings('easy')
+  const { size, bombsAmount, changeDifficulty, setCustomDifficulty, currentDifficulty } = useGameSettings('easy')
 
   const bombs = useRef([] as number[])
   const checkedTiles = useRef([] as number[])
@@ -22,9 +22,9 @@ export function Home() {
     if (checkedTiles.current.length === ((size.current.x * size.current.y) - bombsAmount.current)) {
       pauseTimer(true)
       setTimeout(() => {
-        const bestTime = parseInt(localStorage.getItem('bestMineSweeperTime') ?? '0')
+        const bestTime = parseInt(localStorage.getItem(`best_${currentDifficulty}_time`) ?? '0')
         if (timer < bestTime || bestTime === 0) {
-          localStorage.setItem('bestMineSweeperTime', String(timer))
+          localStorage.setItem(`best_${currentDifficulty}_time`, String(timer))
         }
         endGameSituation.current = 'won'
         setModal(true)
@@ -40,10 +40,10 @@ export function Home() {
     newBombsAmount?: number
   }) {
     if (changeType === 'preset') {
-      hookChangeDifficulty(newDifficultypreset!)
+      changeDifficulty(newDifficultypreset!)
       resetGame()
     } else if (changeType === 'custom') {
-      hookSet(newSize!, newBombsAmount!)
+      setCustomDifficulty(newSize!, newBombsAmount!)
       resetGame()
     }
   }
