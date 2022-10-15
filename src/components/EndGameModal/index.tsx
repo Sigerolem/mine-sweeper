@@ -36,8 +36,8 @@ export function EndGameModal({ showModal, closeModal, situation, time, difficult
               <div>
                 <h1>You won!</h1>
                 <p>Play time: {time}s</p>
-                <p>Best time: {localStorage.getItem('bestMineSweeperTime')}s</p>
-                { time === parseInt(localStorage.getItem('bestMineSweeperTime') ?? '0') &&
+                <p>Best time: {localStorage.getItem(`best_${difficulty}_time`)}s</p>
+                { time === parseInt(localStorage.getItem(`best_${difficulty}_time`) || '0') &&
                   <p>New best time with {difficulty} difficulty!!! 😀</p>
                 }
               </div>
@@ -46,7 +46,7 @@ export function EndGameModal({ showModal, closeModal, situation, time, difficult
                 <div>
                 <h1>You lost</h1>
                 <p>Play time: {time}s</p>
-                <p>Best time: {localStorage.getItem('bestMineSweeperTime') ?? '0'}s</p>
+                <p>Best time: {localStorage.getItem(`best_${difficulty}_time`) || '0'}s</p>
               </div>
               )
         }
