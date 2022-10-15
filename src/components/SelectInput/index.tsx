@@ -1,10 +1,10 @@
 import { MutableRefObject, ReactNode } from 'react'
-import { Difficulty } from '../../Home'
+import { DifficultyPresets } from '../../hooks/useGameSettings'
 import styles from './SelectInput.module.scss'
 
 interface SelectInputProps {
   children: ReactNode;
-  varRef: MutableRefObject<string | Difficulty>
+  varRef: MutableRefObject<string | DifficultyPresets>
   defaultValue: string;
   label: string;
 }
