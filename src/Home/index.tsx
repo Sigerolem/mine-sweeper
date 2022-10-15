@@ -145,6 +145,7 @@ export function Home() {
         situation={endGameSituation.current}
         closeModal={closeEndGameModal}
         time={timer}
+        difficulty={currentDifficulty.current}
       />
     </main>
   )
