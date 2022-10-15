@@ -22,7 +22,7 @@ export function Home() {
     if (checkedTiles.current.length === ((size.current.x * size.current.y) - bombsAmount.current)) {
       pauseTimer(true)
       setTimeout(() => {
-        const bestTime = parseInt(localStorage.getItem(`best_${currentDifficulty}_time`) ?? '0')
+        const bestTime = parseInt(localStorage.getItem(`best_${currentDifficulty.current}_time`) ?? '0')
         if (timer < bestTime || bestTime === 0) {
           localStorage.setItem(`best_${currentDifficulty}_time`, String(timer))
         }
