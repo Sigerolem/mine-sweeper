@@ -24,7 +24,7 @@ export function Home() {
       setTimeout(() => {
         const bestTime = parseInt(localStorage.getItem(`best_${currentDifficulty.current}_time`) ?? '0')
         if (timer < bestTime || bestTime === 0) {
-          localStorage.setItem(`best_${currentDifficulty}_time`, String(timer))
+          localStorage.setItem(`best_${currentDifficulty.current}_time`, String(timer))
         }
         endGameSituation.current = 'won'
         setModal(true)
