@@ -1,56 +1,22 @@
 import { useEffect, useRef, useState } from 'react'
-import { DifficultySettings } from '../components/DifficultySettings'
 import { EndGameModal } from '../components/EndGameModal'
-import { HowToPlay } from '../components/HowToPlay'
+import { Header } from '../components/Header'
 import { Tile } from '../components/Tile'
+import { DifficultyPresets, useGameSettings } from '../hooks/useGameSettings'
 import { useTimer } from '../hooks/useTimer'
-import { countBombsAround, fillArray, listTilesAround, placeBombs, Size, TileType } from '../utils'
+import { countBombsAround, fillArray, listTilesAround, placeBombs, TileType } from '../utils'
 import styles from './Home.module.scss'
 
-const difficultySets = {
-  easy: {
-    size: {
-      x: 10,
-      y: 10
-    },
-    bombsAmount: 12
-  },
-  intermediate: {
-    size: {
-      x: 18,
-      y: 14
-    },
-    bombsAmount: 35
-  },
-  hard: {
-    size: {
-      x: 24,
-      y: 20
-    },
-    bombsAmount: 70
-  },
-  expert: {
-    size: {
-      x: 34,
-      y: 20
-    },
-    bombsAmount: 110
-  }
-}
-
-export type Difficulty = 'easy' | 'intermediate' | 'hard' | 'expert'
-
 export function Home() {
-  const difficulty = useRef<Difficulty>('easy')
-  const size = useRef<Size>({ x: 10, y: 10 })
-  const bombsAmount = useRef(12)
+  const { timer, pauseTimer, setTimer } = useTimer()
+  const { size, bombsAmount, changeDifficulty: hookChangeDifficulty, setCustomDifficulty: hookSet } = useGameSettings('easy')
+
   const bombs = useRef([] as number[])
   const checkedTiles = useRef([] as number[])
   const [tiles, setTiles] = useState(fillArray(size.current))
   const [bombsLeft, setBombsLeft] = useState(10)
   const [modal, setModal] = useState(false)
   const endGameSituation = useRef<'won' | 'lost'>('won')
-  const { timer, pauseTimer, setTimer } = useTimer()
 
   useEffect(() => {
     if (checkedTiles.current.length === ((size.current.x * size.current.y) - bombsAmount.current)) {
@@ -67,34 +33,19 @@ export function Home() {
     setBombsLeft(bombsAmount.current - tiles.reduce((acc, item) => (item.value === '!' ? ++acc : acc), 0))
   }, [tiles])
 
-  function changeDifficulty(newDifficulty: Difficulty) {
-    if (difficulty.current === newDifficulty && bombsAmount.current === difficultySets[newDifficulty].bombsAmount) return
-
-    difficulty.current = newDifficulty
-
-    size.current.x = difficultySets[difficulty.current].size.x
-    size.current.y = difficultySets[difficulty.current].size.y
-    bombsAmount.current = difficultySets[difficulty.current].bombsAmount
-
-    resetGame()
-  }
-
-  function setCustomDifficulty(difficultySize: Difficulty, customBombsAmount: number) {
-    if (difficulty.current === difficultySize && bombsAmount.current === customBombsAmount) return
-
-    if (difficultySize === 'easy' && customBombsAmount > 89) {
-      alert('Too many bombs for the selected size.')
-      return
+  function handleDifficultyChanges({ changeType, newDifficultypreset, newSize, newBombsAmount }: {
+    changeType: 'preset' | 'custom',
+    newDifficultypreset?: DifficultyPresets,
+    newSize?: DifficultyPresets,
+    newBombsAmount?: number
+  }) {
+    if (changeType === 'preset') {
+      hookChangeDifficulty(newDifficultypreset!)
+      resetGame()
+    } else if (changeType === 'custom') {
+      hookSet(newSize!, newBombsAmount!)
+      resetGame()
     }
-
-    difficulty.current = difficultySize
-
-    size.current.x = difficultySets[difficulty.current].size.x
-    size.current.y = difficultySets[difficulty.current].size.y
-
-    bombsAmount.current = customBombsAmount
-
-    resetGame()
   }
 
   function resetGame() {
@@ -171,31 +122,13 @@ export function Home() {
 
   return (
     <main onContextMenu={(e) => e.preventDefault()} className={styles.main}>
-      <header className={styles.header} >
-        <div className={styles.headerLine} >
-          <div className={styles.bombsLeft} >
-            <img src="mine.svg" alt="Mine Image" />
-            <strong>{`${bombsLeft}`}</strong>
-          </div>
-          <div className={styles.timePassed} >
-            <strong>{`${timer}`}</strong>
-            <img src="wood.svg" alt="Mine Image" />
-          </div>
-        </div>
+      <Header
+        handleDifficultyChanges={handleDifficultyChanges}
+        timer={timer}
+        bombsLeft={bombsLeft}
+        resetGame={resetGame}
+      />
 
-        <div className={styles.headerLine} >
-          <DifficultySettings changeDifficulty={changeDifficulty} setCustomDifficulty={setCustomDifficulty} />
-          <button
-            disabled={timer === 0}
-            className={styles.restartButton}
-            onClick={resetGame}
-          >
-            Restart
-          </button>
-          <HowToPlay />
-        </div>
-
-      </header>
       <div
       className={styles.grid}
       style={{
@@ -206,6 +139,7 @@ export function Home() {
           <Tile leftClick={handleLeftClick} rightClick={handleRightClick} tile={item} key={item.id} />
         )}
       </div>
+
       <EndGameModal
         showModal={modal}
         situation={endGameSituation.current}

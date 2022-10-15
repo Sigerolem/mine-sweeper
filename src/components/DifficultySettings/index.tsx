@@ -1,25 +1,29 @@
 import { useRef } from 'react'
-import { Difficulty } from '../../Home'
+import { DifficultyPresets } from '../../hooks/useGameSettings'
 import { RoundButtonModal } from '../RoundButtonModal'
 import { SelectInput } from '../SelectInput'
 import styles from './DifficultySettings.module.scss'
 
 interface DifficultySettingsProps {
-  changeDifficulty: (difficulty: Difficulty) => void;
-  setCustomDifficulty: (difficulty: Difficulty, bombs: number) => void
+  handleDifficultyChanges: ({ changeType, newDifficultypreset, newSize, newBombsAmount }: {
+    changeType: 'preset' | 'custom',
+    newDifficultypreset?: DifficultyPresets,
+    newSize?: DifficultyPresets,
+    newBombsAmount?: number
+  }) => void;
 }
 
-export function DifficultySettings({ changeDifficulty, setCustomDifficulty }: DifficultySettingsProps) {
-  const newSize = useRef<Difficulty>('easy')
+export function DifficultySettings({ handleDifficultyChanges }: DifficultySettingsProps) {
+  const newSize = useRef<DifficultyPresets>('easy')
   const newBombs = useRef<string>('10')
   return (
     <RoundButtonModal icon={'menu'} modalClass={styles.modal} >
       <h3>Difficulty</h3>
       <div className={styles.difficultyOptions}>
-        <button onClick={() => { changeDifficulty('easy') }} >Easy</button>
-        <button onClick={() => { changeDifficulty('intermediate') }} >Medium</button>
-        <button onClick={() => { changeDifficulty('hard') }} >Hard</button>
-        <button onClick={() => { changeDifficulty('expert') }} >Expert</button>
+        <button onClick={() => { handleDifficultyChanges({ changeType: 'preset', newDifficultypreset: 'easy' }) }} >Easy</button>
+        <button onClick={() => { handleDifficultyChanges({ changeType: 'preset', newDifficultypreset: 'intermediate' }) }} >Medium</button>
+        <button onClick={() => { handleDifficultyChanges({ changeType: 'preset', newDifficultypreset: 'hard' }) }} >Hard</button>
+        <button onClick={() => { handleDifficultyChanges({ changeType: 'preset', newDifficultypreset: 'expert' }) }} >Expert</button>
       </div>
       <h3>Custom</h3>
       <div className={styles.settings}>
@@ -39,7 +43,7 @@ export function DifficultySettings({ changeDifficulty, setCustomDifficulty }: Di
         </SelectInput>
         <button onClick={(e) => {
           e.preventDefault()
-          setCustomDifficulty(newSize.current, parseInt(newBombs.current))
+          handleDifficultyChanges({ changeType: 'custom', newSize: newSize.current, newBombsAmount: parseInt(newBombs.current) })
         }}>
           Set
         </button>
